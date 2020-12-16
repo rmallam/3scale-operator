@@ -273,6 +273,24 @@ func main() {
 		os.Exit(1)
 	}
 
+	discoveryClientAccount, err := discovery.NewDiscoveryClientForConfig(mgr.GetConfig())
+	if err != nil {
+		setupLog.Error(err, "unable to create discovery client")
+		os.Exit(1)
+	}
+
+	if err = (&capabilitiescontroller.AccountReconciler{
+		BaseReconciler: reconcilers.NewBaseReconciler(
+			mgr.GetClient(), mgr.GetScheme(), mgr.GetAPIReader(),
+			context.Background(),
+			ctrl.Log.WithName("controllers").WithName("Account"),
+			discoveryClientAccount,
+			mgr.GetEventRecorderFor("Account")),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "Account")
+		os.Exit(1)
+	}
+
 	registerThreescaleMetricsIntoControllerRuntimeMetricsRegistry()
 	// +kubebuilder:scaffold:builder
 

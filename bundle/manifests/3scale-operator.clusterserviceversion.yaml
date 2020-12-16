@@ -149,6 +149,16 @@ metadata:
         },
         {
           "apiVersion": "capabilities.3scale.net/v1beta1",
+          "kind": "Account",
+          "metadata": {
+            "name": "account-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        },
+        {
+          "apiVersion": "capabilities.3scale.net/v1beta1",
           "kind": "ActiveDoc",
           "metadata": {
             "name": "activedoc-from-url"
@@ -499,6 +509,11 @@ spec:
   apiservicedefinitions: {}
   customresourcedefinitions:
     owned:
+    - description: Account is the Schema for the accounts API
+      displayName: Account
+      kind: Account
+      name: accounts.capabilities.3scale.net
+      version: v1beta1
     - description: ActiveDoc is the Schema for the activedocs API
       displayName: Active Doc
       kind: ActiveDoc
@@ -610,6 +625,26 @@ spec:
     spec:
       clusterPermissions:
       - rules:
+        - apiGroups:
+          - capabilities.3scale.net
+          resources:
+          - accounts
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - capabilities.3scale.net
+          resources:
+          - accounts/status
+          verbs:
+          - get
+          - patch
+          - update
         - apiGroups:
           - capabilities.3scale.net
           resources:

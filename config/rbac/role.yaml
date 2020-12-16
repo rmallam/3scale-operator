@@ -9,6 +9,26 @@ rules:
 - apiGroups:
   - capabilities.3scale.net
   resources:
+  - accounts
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - capabilities.3scale.net
+  resources:
+  - accounts/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - capabilities.3scale.net
+  resources:
   - activedocs
   verbs:
   - create
