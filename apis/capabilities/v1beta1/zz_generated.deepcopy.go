@@ -118,6 +118,16 @@ func (in *AccountStatus) DeepCopyInto(out *AccountStatus) {
 		*out = new(int64)
 		**out = **in
 	}
+	if in.AccountState != nil {
+		in, out := &in.AccountState, &out.AccountState
+		*out = new(string)
+		**out = **in
+	}
+	if in.CreditCardStored != nil {
+		in, out := &in.CreditCardStored, &out.CreditCardStored
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make(common.Conditions, len(*in))

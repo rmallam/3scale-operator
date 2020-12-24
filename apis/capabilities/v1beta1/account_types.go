@@ -24,6 +24,7 @@ import (
 	"github.com/go-logr/logr"
 	"github.com/google/go-cmp/cmp"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/validation/field"
 )
 
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
@@ -71,6 +72,12 @@ type AccountStatus struct {
 	// +optional
 	ID *int64 `json:"accountID,omitempty"`
 
+	// +optional
+	AccountState *string `json:"accountState,omitempty"`
+
+	// +optional
+	CreditCardStored *bool `json:"creditCardStored,omitempty"`
+
 	// ProviderAccountHost contains the 3scale account's provider URL
 	// +optional
 	ProviderAccountHost string `json:"providerAccountHost,omitempty"`
@@ -97,6 +104,18 @@ func (a *AccountStatus) Equals(other *AccountStatus, logger logr.Logger) bool {
 	if a.ProviderAccountHost != other.ProviderAccountHost {
 		diff := cmp.Diff(a.ProviderAccountHost, other.ProviderAccountHost)
 		logger.V(1).Info("ProviderAccountHost not equal", "difference", diff)
+		return false
+	}
+
+	if !reflect.DeepEqual(a.AccountState, other.AccountState) {
+		diff := cmp.Diff(a.AccountState, other.AccountState)
+		logger.V(1).Info("AccountState not equal", "difference", diff)
+		return false
+	}
+
+	if !reflect.DeepEqual(a.CreditCardStored, other.CreditCardStored) {
+		diff := cmp.Diff(a.CreditCardStored, other.CreditCardStored)
+		logger.V(1).Info("CreditCardStored not equal", "difference", diff)
 		return false
 	}
 
