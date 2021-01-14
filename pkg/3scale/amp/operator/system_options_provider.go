@@ -346,6 +346,14 @@ func (s *SystemOptionsProvider) setSystemSMTPOptions() error {
 		*option.field = &val
 	}
 
+	// Optional fields where the field being set in the secret with the empty
+	// string has a different meaning than the field not being set at all
+	smtpFromAddress, err := s.secretSource.GetField(component.SystemSecretSystemSMTPSecretName, component.SystemSecretSystemSMTPAddressFieldName)
+	if err != nil {
+		return err
+	}
+	s.options.SmtpSecretOptions.FromAddress = smtpFromAddress
+
 	s.options.SmtpSecretOptions = smtpSecretOptions
 	return nil
 }
