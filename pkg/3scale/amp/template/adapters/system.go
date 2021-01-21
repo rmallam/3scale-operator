@@ -244,7 +244,6 @@ func (s *System) options() (*component.SystemOptions, error) {
 	defaultSystemSMTPPassword := component.DefaultSystemSMTPPassword()
 	defaultSystemSMTPPort := component.DefaultSystemSMTPPort()
 	defaultSystemSMTPUsername := component.DefaultSystemSMTPUsername()
-
 	o.SmtpSecretOptions = component.SystemSMTPSecretOptions{
 		Address:           &defaultSystemSMTPAddress,
 		Authentication:    &defaultSystemSMTPAuthentication,

@@ -306,6 +306,7 @@ func defaultSystemOptions(opts *component.SystemOptions) *component.SystemOption
 	tmpSMTPPassword := opts.SmtpSecretOptions.Password
 	tmpSMTPPort := component.DefaultSystemSMTPPort()
 	tmpSMTPUsername := component.DefaultSystemSMTPUsername()
+	tmpSMTPFromAddress := component.DefaultSystemSMTPFromAddress()
 	storageRequests := component.DefaultSharedStorageResources()
 
 	expectedOpts := &component.SystemOptions{
@@ -347,6 +348,7 @@ func defaultSystemOptions(opts *component.SystemOptions) *component.SystemOption
 			Password:          tmpSMTPPassword,
 			Port:              &tmpSMTPPort,
 			Username:          &tmpSMTPUsername,
+			FromAddress:       &tmpSMTPFromAddress,
 		},
 		CommonLabels:                  testSystemCommonLabels(),
 		CommonAppLabels:               testSystemCommonAppLabels(),

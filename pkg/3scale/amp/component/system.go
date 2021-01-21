@@ -150,7 +150,8 @@ func (system *System) getSystemSMTPEnvsFromSMTPSecret() []v1.EnvVar {
 		helper.EnvVarFromSecret("SMTP_OPENSSL_VERIFY_MODE", SystemSecretSystemSMTPSecretName, SystemSecretSystemSMTPOpenSSLVerifyModeFieldName),
 	}
 
-	if system.Options.SmtpSecretOptions.FromAddress != nil {
+	if system.Options.SmtpSecretOptions.FromAddress != nil &&
+		*system.Options.SmtpSecretOptions.FromAddress != "" {
 		result = append(result, helper.EnvVarFromSecret("NOREPLY_EMAIL", SystemSecretSystemSMTPSecretName, SystemSecretSystemSMTPFromAddressFieldName))
 	}
 

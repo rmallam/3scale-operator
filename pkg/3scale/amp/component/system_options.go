@@ -208,6 +208,10 @@ func DefaultSystemSMTPUsername() string {
 	return ""
 }
 
+func DefaultSystemSMTPFromAddress() string {
+	return ""
+}
+
 func DefaultAppMasterContainerResourceRequirements() *v1.ResourceRequirements {
 	return &v1.ResourceRequirements{
 		Limits: v1.ResourceList{

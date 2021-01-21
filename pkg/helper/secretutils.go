@@ -97,24 +97,6 @@ func NewSecretSource(client client.Client, namespace string) *SecretSource {
 	}
 }
 
-// GetField returns the value of the secret field named fieldName in
-// the Secret named secretName.
-// If the field fieldName does not exist in the secret secretName or the secret
-// secretName does not exists a nil string is returned.
-// If there's an error processing the SecretSource an error is returned.
-func (s *SecretSource) GetField(secretName, fieldName string) (*string, error) {
-	secret, err := s.CachedSecret(secretName)
-	if err != nil {
-		if errors.IsNotFound(err) {
-			return nil, nil
-		}
-		return nil, err
-	}
-
-	result := GetSecretDataValue(secret.Data, fieldName)
-	return result, nil
-}
-
 func (s *SecretSource) FieldValue(secretName, fieldName string, def string) (string, error) {
 	return s.fieldReader(secretName, fieldName, false, false, def)
 }
