@@ -13,6 +13,7 @@ import (
 	appsv1 "github.com/openshift/api/apps/v1"
 	routev1 "github.com/openshift/api/route/v1"
 	corev1 "k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/fields"
@@ -61,8 +62,20 @@ var _ = Describe("APIManager controller", func() {
 				Name: testNamespace,
 			},
 		}
+
+		events := &v1.EventList{}
+		eventListOptions := client.ListOptions{
+			Namespace: desiredTestNamespace.Name,
+		}
+
+		err := testK8sAPIClient.List(context.Background(), events, &eventListOptions)
+		Expect(err).ToNot(HaveOccurred())
+		fmt.Println("EVENTS:--------------")
+		fmt.Println(events)
+		fmt.Println("END EVENTS:----------")
+
 		// Add any teardown steps that needs to be executed after each test
-		err := testK8sClient.Delete(context.Background(), desiredTestNamespace, client.PropagationPolicy(metav1.DeletePropagationForeground))
+		err = testK8sClient.Delete(context.Background(), desiredTestNamespace, client.PropagationPolicy(metav1.DeletePropagationForeground))
 
 		Expect(err).ToNot(HaveOccurred())
 
@@ -120,7 +133,7 @@ var _ = Describe("APIManager controller", func() {
 			fmt.Fprintf(GinkgoWriter, "All APIManager managed DeploymentConfigs are ready\n")
 
 			fmt.Fprintf(GinkgoWriter, "Waiting for all APIManager managed Routes\n")
-			err = waitForAllAPIManagerStandardRoutes(testNamespace, 5*time.Second, 15*time.Minute, wildcardDomain, GinkgoWriter)
+			err = waitForAllAPIManagerStandardRoutes(testNamespace, 5*time.Second, 4*time.Minute, wildcardDomain, GinkgoWriter)
 			Expect(err).ToNot(HaveOccurred())
 			fmt.Fprintf(GinkgoWriter, "All APIManager managed Routes are available\n")
 
@@ -175,6 +188,7 @@ func waitForAllAPIManagerStandardDeploymentConfigs(namespace string, retryInterv
 			return false
 
 		}, timeout, retryInterval).Should(BeTrue())
+
 	}
 
 	return nil

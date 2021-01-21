@@ -503,6 +503,10 @@ jobs:
       - run:
           name: run E2E tests
           command: |
+            echo "pvs":
+            oc get pv --all-namespaces
+            echo "storageclasses"
+            oc get storageclass --all-namespaces
             make test-e2e
           no_output_timeout: 30m
       - oc-status
