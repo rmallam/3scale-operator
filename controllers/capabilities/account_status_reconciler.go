@@ -8,7 +8,7 @@ import (
 	"github.com/3scale/3scale-operator/pkg/helper"
 	"github.com/3scale/3scale-operator/pkg/reconcilers"
 
-	threescaleapi "github.com/3scale/3scale-porta-go-client/client"
+	//	threescaleapi "github.com/3scale/3scale-porta-go-client/client"
 	"github.com/go-logr/logr"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
@@ -19,19 +19,19 @@ type AccountStatusReconciler struct {
 	*reconcilers.BaseReconciler
 	resource            *capabilitiesv1beta1.Account
 	providerAccountHost string
-	remoteAccount       *threescaleapi.DeveloperAccount
-	reconcileError      error
-	logger              logr.Logger
+	//remoteAccount       *threescaleapi.DeveloperAccount
+	reconcileError error
+	logger         logr.Logger
 }
 
-func NewAccountStatusReconciler(b *reconcilers.BaseReconciler, resource *capabilitiesv1beta1.Account, providerAccountHost string, remoteAccount *threescaleapi.DeveloperAccount, reconcileError error) *AccountStatusReconciler {
+func NewAccountStatusReconciler(b *reconcilers.BaseReconciler, resource *capabilitiesv1beta1.Account, providerAccountHost string, reconcileError error) *AccountStatusReconciler {
 	return &AccountStatusReconciler{
 		BaseReconciler:      b,
 		resource:            resource,
 		providerAccountHost: providerAccountHost,
-		remoteAccount:       remoteAccount,
-		reconcileError:      reconcileError,
-		logger:              b.Logger().WithValues("Status Reconciler", resource.Name),
+		//remoteAccount:       remoteAccount,
+		reconcileError: reconcileError,
+		logger:         b.Logger().WithValues("Status Reconciler", resource.Name),
 	}
 }
 
@@ -77,12 +77,12 @@ func (s *AccountStatusReconciler) Reconcile() (reconcile.Result, error) {
 func (s *AccountStatusReconciler) calculateStatus() (*capabilitiesv1beta1.AccountStatus, error) {
 	newStatus := &capabilitiesv1beta1.AccountStatus{}
 
-	if s.remoteAccount != nil {
-		newStatus.ID = s.remoteAccount.Element.ID
-	}
+	//if s.remoteAccount != nil {
+	//	newStatus.ID = s.remoteAccount.Element.ID
+	//}
 
-	newStatus.AccountState = &s.remoteAccount.Element.State
-	newStatus.CreditCardStored = &s.remoteAccount.Element.CreditCardStored
+	//newStatus.AccountState = s.remoteAccount.Element.State
+	//newStatus.CreditCardStored = s.remoteAccount.Element.CreditCardStored
 
 	newStatus.ProviderAccountHost = s.providerAccountHost
 

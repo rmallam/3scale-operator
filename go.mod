@@ -29,6 +29,8 @@ require (
 	sigs.k8s.io/controller-runtime v0.6.3
 )
 
+//replace github.com/3scale/3scale-porta-go-client => /home/eguzki/git/3scale-porta-go-client
+
 replace github.com/openshift/api => github.com/openshift/api v0.0.0-20200527184302-a843dc3262a0 // Required until https://github.com/operator-framework/operator-lifecycle-manager/pull/1241 is resolved
 
 // Required due to other libraries referencing v12.0.0+incompatible and without replace we can't have v0.18.6 specified

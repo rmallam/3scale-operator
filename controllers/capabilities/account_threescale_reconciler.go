@@ -1,15 +1,11 @@
 package controllers
 
 import (
-	"encoding/json"
-	"reflect"
-
 	capabilitiesv1beta1 "github.com/3scale/3scale-operator/apis/capabilities/v1beta1"
 	"github.com/3scale/3scale-operator/pkg/reconcilers"
 
 	threescaleapi "github.com/3scale/3scale-porta-go-client/client"
 	"github.com/go-logr/logr"
-	"github.com/google/go-cmp/cmp"
 )
 
 type AccountThreescaleReconciler struct {
@@ -30,7 +26,8 @@ func NewAccountThreescaleReconciler(b *reconcilers.BaseReconciler, resource *cap
 	}
 }
 
-func (s *AccountThreescaleReconciler) Reconcile() (*threescaleapi.DeveloperAccount, error) {
+//func (s *AccountThreescaleReconciler) Reconcile() (*threescaleapi.DeveloperAccount, error) {
+func (s *AccountThreescaleReconciler) Reconcile() (*int, error) {
 	s.logger.V(1).Info("START")
 	return nil, nil
 }

@@ -45,6 +45,14 @@ spec:
             org_name:
               description: OrgName is the organization name
               type: string
+            providerAccountRef:
+              description: ProviderAccountRef references account provider credentials
+              properties:
+                name:
+                  description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                    TODO: Add other useful fields. apiVersion, kind, uid?'
+                  type: string
+              type: object
           required:
           - org_name
           type: object
@@ -54,6 +62,8 @@ spec:
             accountID:
               format: int64
               type: integer
+            accountState:
+              type: string
             conditions:
               description: Current state of the policy resource. Conditions represent
                 the latest available observations of an object's state
@@ -95,6 +105,8 @@ spec:
                 - type
                 type: object
               type: array
+            creditCardStored:
+              type: boolean
             observedGeneration:
               description: ObservedGeneration reflects the generation of the most
                 recently observed Backend Spec.

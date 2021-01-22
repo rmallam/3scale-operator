@@ -24,6 +24,7 @@ import (
 	"github.com/go-logr/logr"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/util/validation/field"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
@@ -110,34 +111,36 @@ func (r *AccountReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 }
 
 func (r *AccountReconciler) reconcileSpec(accountCR *capabilitiesv1beta1.Account, logger logr.Logger) (*AccountStatusReconciler, error) {
-	err := r.validateSpec(openapiCR)
+	err := r.validateSpec(accountCR)
 	if err != nil {
-		statusReconciler := NewOpenAPIStatusReconciler(r.BaseReconciler, openapiCR, "", err, false)
-		return statusReconciler, ctrl.Result{}, err
+		statusReconciler := NewAccountStatusReconciler(r.BaseReconciler, accountCR, "", err)
+		return statusReconciler, err
 	}
 
 	providerAccount, err := controllerhelper.LookupProviderAccount(r.Client(), accountCR.Namespace, accountCR.Spec.ProviderAccountRef, logger)
 	if err != nil {
-		statusReconciler := NewAccountStatusReconciler(r.BaseReconciler, accountCR, "", nil, err)
+		statusReconciler := NewAccountStatusReconciler(r.BaseReconciler, accountCR, "", err)
 		return statusReconciler, err
 	}
 
 	threescaleAPIClient, err := controllerhelper.PortaClient(providerAccount)
 	if err != nil {
-		statusReconciler := NewAccountStatusReconciler(r.BaseReconciler, accountCR, providerAccount.AdminURLStr, nil, err)
+		statusReconciler := NewAccountStatusReconciler(r.BaseReconciler, accountCR, providerAccount.AdminURLStr, err)
 		return statusReconciler, err
 	}
 
 	reconciler := NewAccountThreescaleReconciler(r.BaseReconciler, accountCR, threescaleAPIClient, providerAccount.AdminURLStr, logger)
-	accountObj, err := reconciler.Reconcile()
+	//accountObj, err := reconciler.Reconcile()
+	_, err = reconciler.Reconcile()
 
-	statusReconciler := NewAccountStatusReconciler(r.BaseReconciler, accountCR, providerAccount.AdminURLStr, accountObj, err)
+	//statusReconciler := NewAccountStatusReconciler(r.BaseReconciler, accountCR, providerAccount.AdminURLStr, accountObj, err)
+	statusReconciler := NewAccountStatusReconciler(r.BaseReconciler, accountCR, providerAccount.AdminURLStr, err)
 	return statusReconciler, err
 }
 
 func (r *AccountReconciler) validateSpec(resource *capabilitiesv1beta1.Account) error {
 	errors := field.ErrorList{}
-	errors = append(errors, resource.Validate()...)
+	//errors = append(errors, resource.Validate()...)
 
 	if len(errors) == 0 {
 		return nil
