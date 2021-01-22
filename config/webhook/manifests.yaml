@@ -1,0 +1,25 @@
+
+---
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+  creationTimestamp: null
+  name: validating-webhook-configuration
+webhooks:
+- clientConfig:
+    caBundle: Cg==
+    service:
+      name: webhook-service
+      namespace: system
+      path: /validate-capabilities-3scale-net-v1beta1-account
+  failurePolicy: Fail
+  name: vaccount.kb.io
+  rules:
+  - apiGroups:
+    - capabilities.3scale.net
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - accounts

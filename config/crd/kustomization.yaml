@@ -40,7 +40,7 @@ patchesStrategicMerge:
 #- patches/cainjection_in_openapis.yaml
 #- patches/cainjection_in_activedocs.yaml
 #- patches/cainjection_in_policies.yaml
-#- patches/cainjection_in_accounts.yaml
+- patches/cainjection_in_accounts.yaml
 # +kubebuilder:scaffold:crdkustomizecainjectionpatch
 
 # ActiveDoc CRD ActiveDocOpenAPIRef OpenAPI Validation]. This patch following patch adds `oneOf` OpenAPI

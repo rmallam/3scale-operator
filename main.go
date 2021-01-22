@@ -292,6 +292,10 @@ func main() {
 	}
 
 	registerThreescaleMetricsIntoControllerRuntimeMetricsRegistry()
+	if err = (&capabilitiesv1beta1.Account{}).SetupWebhookWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create webhook", "webhook", "Account")
+		os.Exit(1)
+	}
 	// +kubebuilder:scaffold:builder
 
 	setupLog.Info("starting manager")

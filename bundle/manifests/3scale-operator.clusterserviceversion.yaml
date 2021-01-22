@@ -771,6 +771,10 @@ spec:
                   value: quay.io/openshift/origin-cli:4.2
                 image: quay.io/3scale/3scale-operator:master
                 name: manager
+                ports:
+                - containerPort: 9443
+                  name: webhook-server
+                  protocol: TCP
                 resources:
                   limits:
                     cpu: 100m
@@ -778,8 +782,17 @@ spec:
                   requests:
                     cpu: 100m
                     memory: 100Mi
+                volumeMounts:
+                - mountPath: /tmp/k8s-webhook-server/serving-certs
+                  name: cert
+                  readOnly: true
               serviceAccountName: 3scale-operator
               terminationGracePeriodSeconds: 10
+              volumes:
+              - name: cert
+                secret:
+                  defaultMode: 420
+                  secretName: webhook-server-cert
       permissions:
       - rules:
         - apiGroups:
@@ -1230,3 +1243,23 @@ spec:
   provider:
     name: Red Hat
   version: 0.0.1
+  webhookdefinitions:
+  - admissionReviewVersions:
+    - v1beta1
+    containerPort: 443
+    deploymentName: threescale-operator-controller-manager
+    failurePolicy: Fail
+    generateName: vaccount.kb.io
+    rules:
+    - apiGroups:
+      - capabilities.3scale.net
+      apiVersions:
+      - v1beta1
+      operations:
+      - UPDATE
+      resources:
+      - accounts
+    sideEffects: None
+    targetPort: 9443
+    type: ValidatingAdmissionWebhook
+    webhookPath: /validate-capabilities-3scale-net-v1beta1-account
